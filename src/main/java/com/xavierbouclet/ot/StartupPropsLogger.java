@@ -25,9 +25,9 @@ class StartupPropsLogger implements ApplicationRunner {
         logProp("server.port");
         logProp("management.server.port");
         logProp("spring.application.name");
-        logProp("spring.otlp.metrics.export.url");
-        logProp("spring.opentelemetry.tracing.export.otlp.endpoint");
-        logProp("spring.opentelemetry.logging.export.otlp.endpoint");
+        logProp("management.otlp.metrics.export.url");
+        logProp("management.opentelemetry.tracing.export.otlp.endpoint");
+        logProp("management.opentelemetry.logging.export.otlp.endpoint");
     }
 
     private void logProp(String key) {

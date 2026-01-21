@@ -1,9 +1,12 @@
 spring:
   application:
     name: springboot4-opentelemetry
+
+management:
   otlp:
     metrics:
       export:
+        step: 2s
         url: http://localhost:4318/v1/metrics
   opentelemetry:
     tracing:
@@ -14,11 +17,12 @@ spring:
       export:
         otlp:
           endpoint: http://localhost:4318/v1/logs
-
-management:
   tracing:
     sampling:
       probability: 1.0
+  observations:
+    annotations:
+      enabled: true
 
 server:
   shutdown: immediate

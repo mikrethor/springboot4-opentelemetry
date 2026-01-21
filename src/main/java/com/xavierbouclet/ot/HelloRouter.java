@@ -11,20 +11,29 @@ import static org.springframework.web.servlet.function.RequestPredicates.GET;
 import static org.springframework.web.servlet.function.RouterFunctions.route;
 
 @Configuration
-public class HomeRouter {
+public class HelloRouter {
 
-    private static final Logger log = LoggerFactory.getLogger(HomeRouter.class);
+    private static final Logger log = LoggerFactory.getLogger(HelloRouter.class);
+
+    private final HelloMetrics helloMetrics;
+    private final HelloService helloService;
+
+    public HelloRouter(HelloMetrics helloMetrics, HelloService helloService) {
+        this.helloMetrics = helloMetrics;
+        this.helloService = helloService;
+    }
 
     @Bean
     RouterFunction<ServerResponse> routes() {
         return route(GET("/hello"), request -> {
             log.info("Hello endpoint called");
+            helloMetrics.incHello();
             return ServerResponse.ok().body("Hello World!");
         })
                 .andRoute(GET("/greet/{name}"), request -> {
                             String name = request.pathVariable("name");
                             log.info("Greeting user: {}", name);
-                            simulateWork();
+                            helloService.simulateWork(50);
                             return ServerResponse.ok().body("Hello, " + name + "!");
                         }
                 )
@@ -42,11 +51,5 @@ public class HomeRouter {
     }
 
 
-    private void simulateWork() {
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }
+
 }
